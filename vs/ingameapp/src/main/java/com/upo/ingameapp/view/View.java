@@ -1,6 +1,9 @@
 package com.upo.ingameapp.view;
 
 import com.upo.ingameapp.bo.impl.NegocioBOImpl;
+import com.upo.ingameapp.controller.IController;
+import com.upo.ingameapp.controller.impl.ControllerImpl;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import com.upo.ingameapp.model.Tecnico;
@@ -11,7 +14,53 @@ import com.upo.ingameapp.model.Tecnico;
  */
 public class View {
 
-    private NegocioBOImpl negocio = new NegocioBOImpl();
+    /* SERVICIOS */
+    private IController controller = new ControllerImpl();
+
+    public void menu() {
+        int opc = 0;
+        boolean salir = false;
+        Scanner sc = new Scanner(System.in);
+        // carga datos masiva:
+
+        do {
+            mostrarMenuPrincipal();
+
+            try {
+
+                opc = sc.nextInt();
+
+                switch (opc) {
+
+                    case 1:
+                        menuGestionTecnicos();
+
+                        break;
+                    case 2:
+                        menuGestionIncidencias();
+
+                        break;
+
+                    case 3:
+                        menuTareas();
+
+                    case 4:
+                        menuEstadisticas();
+
+                        break;
+                    case 0:
+                        salir = true;
+                        break;
+
+                }
+
+            } catch (InputMismatchException e) {
+                System.out.println("Debes introducir un numero");
+                sc.next();
+            }
+
+        } while (!salir);
+    }
 
     private void mostrarMenuPrincipal() {
         System.out.println("Menu InGameSupportApp");
@@ -66,51 +115,6 @@ public class View {
         System.out.println("0. Salir");
     }
 
-    public void menu() {
-        int opc = 0;
-        boolean salir = false;
-        Scanner sc = new Scanner(System.in);
-        //carga datos masiva:
-        this.negocio.realizarCargaMasivaDeDatos();
-        do {
-            mostrarMenuPrincipal();
-
-            try {
-
-                opc = sc.nextInt();
-
-                switch (opc) {
-
-                    case 1:
-                        menuGestionTecnicos();
-
-                        break;
-                    case 2:
-                        menuGestionIncidencias();
-
-                        break;
-
-                    case 3:
-                        menuTareas();
-
-                    case 4:
-                        menuEstadisticas();
-
-                        break;
-                    case 0:
-                        salir = true;
-                        break;
-
-                }
-
-            } catch (InputMismatchException e) {
-                System.out.println("Debes introducir un numero");
-                sc.next();
-            }
-
-        } while (!salir);
-    }
-
     private void menuGestionTecnicos() {
 
         int opc;
@@ -126,17 +130,16 @@ public class View {
 
                 case 1:
                     System.out.println("Entrando a añadir técnico...");
-                    aniadirTecnico();
+                    controller.aniadirTecnico();
 
                     break;
                 case 2:
                     System.out.println("Entrando a añadir grupo...");
-                    aniadirGrupo();
+                    controller.aniadirGrupo();
                     break;
 
                 case 0:
                     System.out.println("Volviendo atras...");
-
                     menu();
                     break;
 
@@ -235,7 +238,7 @@ public class View {
 
                 case 1:
                     System.out.println("Entrando a Consultar Tarea Técnico...");
-                    consultarTareasTecnico();
+                    controller.consultarTareasTecnico();
                     break;
                 case 2:
                     System.out.println("Entrando a Consultar Tarea Grupo...");
@@ -266,36 +269,6 @@ public class View {
         }
     }
 
-    //Métodos taareas de menu gestión de Técnicos.
-    private void aniadirTecnico() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Introduzca el código único para el Técnico:");
-        String codigo = sc.next();
-        System.out.println("Introduzca el nombre del Técnico");
-        String nombre = sc.next();
-        System.out.println("Introduzca el apellido del Técnico");
-        this.negocio.introducirDatosTecnico(codigo, nombre, nombre);
-        System.out.println("Ahora los técnicos son los siguientes:");
-        this.negocio.obtenerTecnicos();
+    // Métodos taareas de menu gestión de Técnicos.
 
-    }
-
-    private void aniadirGrupo() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Introduzca el nombre del grupo.");
-        String nombreGrupo = sc.next();
-        System.out.println("Introduzca el código del grupo:");
-        String codigo = sc.next();
-        this.negocio.crearGrupo(nombreGrupo, codigo);
-
-    }
-
-    //Implementar métodos para menu de Incidencias y menú de Tareas
-    //Métodos para menú de estadisticas:
-    private void consultarTareasTecnico() {
-        Scanner sc = new Scanner(System.in);
-        this.negocio.obtenerTecnicos();
-        int index = sc.nextInt();       
-        this.negocio.consultarTareasTecnico( this.negocio.seleccionarTecnico(index));
-    }
 }
