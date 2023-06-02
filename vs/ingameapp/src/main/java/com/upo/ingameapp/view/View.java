@@ -1,12 +1,9 @@
 package com.upo.ingameapp.view;
 
-import com.upo.ingameapp.bo.impl.NegocioBOImpl;
 import com.upo.ingameapp.controller.IController;
 import com.upo.ingameapp.controller.impl.ControllerImpl;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import com.upo.ingameapp.model.Tecnico;
 
 /**
  *
@@ -21,7 +18,7 @@ public class View {
         int opc = 0;
         boolean salir = false;
         Scanner sc = new Scanner(System.in);
-        // carga datos masiva:
+        
 
         do {
             mostrarMenuPrincipal();
