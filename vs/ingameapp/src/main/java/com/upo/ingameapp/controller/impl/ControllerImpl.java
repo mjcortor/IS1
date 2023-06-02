@@ -19,7 +19,8 @@ public class ControllerImpl implements IController {
         System.out.println("Introduzca el nombre del Técnico");
         String nombre = sc.next();
         System.out.println("Introduzca el apellido del Técnico");
-        this.negocioBO.introducirDatosTecnico(codigo, nombre, nombre);
+        String apellido = sc.next();
+        this.negocioBO.introducirDatosTecnico(codigo, nombre, apellido);
         System.out.println("Ahora los técnicos son los siguientes:");
         this.negocioBO.obtenerTecnicos();
 
