@@ -10,5 +10,6 @@ public interface IController {
     void crearTarea();
     void asignacionAutomaticaTareas();    
     void mostrarEstadisticas();
+    void listarIncidenciasDisponibles();
     
 }

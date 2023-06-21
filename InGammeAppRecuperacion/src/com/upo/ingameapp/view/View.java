@@ -83,7 +83,7 @@ public class View {
         System.out.println("Menu Gestión Incidencias");
         System.out.println("-------------------------------");
         System.out.println("1. Añadir Incidencia.");
-        System.out.println("2. Listar Incidencias.");
+        System.out.println("2. Listar Incidencias disponibles.");
         System.out.println("");
         System.out.println("0. Salir");
 
@@ -92,8 +92,8 @@ public class View {
     private void mostrarMenuGestionTareas() {
         System.out.println("Menu Gestión Incidencias");
         System.out.println("-------------------------------");
-        System.out.println("1. Introducir Tarea.");
-        System.out.println("2. Introducir Tareas a Grupos.");
+        System.out.println("1. Introducir Tarea.");  
+        System.out.println("2. Asignación Automática de Tareas.");
         System.out.println("");
         System.out.println("0. Salir");
 
@@ -103,10 +103,11 @@ public class View {
         System.out.println("Menu Estadisticas");
         System.out.println("-------------------------------");
 
-        System.out.println("1. Consultar Tarea Técnico");
-        System.out.println("2. Consultar Tarea Grupo");
+        System.out.println("1. Obtener estadísticas del sistema.");
+        System.out.println("2. Consultar Tareas");
         System.out.println("3. Consultar Incidencias");
-        System.out.println("4. Agrupación Automática de Tareas a Grupos.");
+        System.out.println("4. Consultar Técnicos");
+        System.out.println("5. Consultar Grupos.");
         System.out.println("");
         System.out.println("0. Salir");
     }
@@ -165,11 +166,11 @@ public class View {
 
                 case 1:
                     System.out.println("Entrando a añadir incidencia...");
-
+                    controller.aniadirIncidencia();
                     break;
                 case 2:
                     System.out.println("Entrando a listar incidencias...");
-
+                    controller.listarIncidenciasDisponibles();
                     break;
 
                 case 0:

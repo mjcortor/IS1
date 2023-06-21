@@ -11,10 +11,8 @@ import com.upo.ingameapp.model.Incidencia;
 import com.upo.ingameapp.model.Tarea;
 import com.upo.ingameapp.model.Tecnico;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
 
 /**
  *
