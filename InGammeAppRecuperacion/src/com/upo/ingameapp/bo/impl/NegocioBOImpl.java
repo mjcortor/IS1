@@ -281,5 +281,9 @@ public class NegocioBOImpl implements INegocioBO {
     public void asignacionAutomaticaTareas() {
         
     }
+    
+    public AlmacenDatos getAlmacen(){
+        return this.almacenDatos;
+    }
 
 }

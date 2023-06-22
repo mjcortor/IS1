@@ -33,13 +33,12 @@ public class TecnicoTest {
         String nombre = "John";
         String apellido = "Doe";
 
-        tecnicoManager.introducirDatosTecnico(codigo, nombre, apellido);
+        tecnicoManager.crearTecnico(nombre, apellido);
 
-        List<Tecnico> listaTecnicos = tecnicoManager.getAlmacenDatos().getListaTecnicos();
+        List<Tecnico> listaTecnicos = tecnicoManager.getAlmacen().getListaTecnicos();
         assertEquals(1, listaTecnicos.size());
 
-        Tecnico tecnico = listaTecnicos.get(0);
-        assertEquals(codigo, tecnico.getCodigo());
+        Tecnico tecnico = listaTecnicos.get(0);        
         assertEquals(nombre, tecnico.getNombre());
         assertEquals(apellido, tecnico.getApellidos());
     }
@@ -50,14 +49,14 @@ public class TecnicoTest {
         String nombre = "John";
         String apellido = "Doe";
 
-        Tecnico tecnicoExistente = new Tecnico(codigo, nombre, apellido);
+        Tecnico tecnicoExistente = new Tecnico(nombre, apellido);
         List<Tecnico> listaTecnicos = new ArrayList<>();
         listaTecnicos.add(tecnicoExistente);
-        tecnicoManager.getAlmacenDatos().setListaTecnicos(listaTecnicos);
+        tecnicoManager.getAlmacen().setListaTecnicos(listaTecnicos);
 
-        tecnicoManager.introducirDatosTecnico(codigo, "Jane", "Smith");
+        tecnicoManager.crearTecnico("Jane", "Smith");
 
-        List<Tecnico> listaTecnicosActualizada = tecnicoManager.getAlmacenDatos().getListaTecnicos();
+        List<Tecnico> listaTecnicosActualizada = tecnicoManager.getAlmacen().getListaTecnicos();
         assertEquals(1, listaTecnicosActualizada.size());
 
         Tecnico tecnico = listaTecnicosActualizada.get(0);
