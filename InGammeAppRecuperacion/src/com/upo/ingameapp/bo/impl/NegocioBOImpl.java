@@ -11,7 +11,11 @@ import com.upo.ingameapp.model.Incidencia;
 import com.upo.ingameapp.model.Tarea;
 import com.upo.ingameapp.model.Tecnico;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -279,11 +283,99 @@ public class NegocioBOImpl implements INegocioBO {
 
     @Override
     public void asignacionAutomaticaTareas() {
-        
+        List<Tecnico> tecnicosDisponibles = new ArrayList<>(tecnicoDAO.findTecnicoDisponible());
+        List<Tarea> tareasSinAsignar = new ArrayList<>();
+        // Crear tareas mientras haya técnicos disponibles y tareas sin asignar
+        while (!tecnicosDisponibles.isEmpty() && !incidenciaDAO.findIncidenciasNuevasSinTarea().isEmpty()) {
+            Tecnico tecnico = tecnicosDisponibles.get(0);
+
+            // Verificar si el técnico ya tiene asignadas el máximo de tareas permitidas
+            if (3 >= tecnico.getNumTareas()) {
+                tecnicosDisponibles.remove(tecnico);
+                continue;
+            }
+
+            Incidencia incidencia = incidenciaDAO.findIncidenciasNuevasSinTarea().get(0);
+            Tarea tarea = new Tarea(incidencia.getNombre(), tecnico, Arrays.asList(incidencia));
+
+            // Calcular fecha fin de la tarea sumando el tiempo de estimación de las incidencias
+            int tiempoEstimado = incidencia.getEstimacion();
+            for (Incidencia inc : incidenciaDAO.findAll()) {
+                tiempoEstimado += inc.getEstimacion();
+            }
+            tarea.setFechaFin(this.calcularTiempoFinTarea(tarea.getFechaInicio(), tiempoEstimado));
+
+            // Asociar tarea al técnico y viceversa            
+            tarea.setTecnico(tecnico);
+
+            // Asociar tarea a incidencia
+            incidencia.setTarea(tarea);
+
+            // Actualizar listas
+            incidenciaDAO.findIncidenciasNuevasSinTarea().remove(incidencia);
+            tareasSinAsignar.add(tarea);
+        }
+
+// Imprimir información de las tareas asignadas
+        for (Tarea tarea : tareasSinAsignar) {
+            System.out.println("Tarea: " + tarea.getNombre());
+            System.out.println("Técnico asignado: " + tarea.getTecnico().getNombre() + " " + tarea.getTecnico().getApellidos());
+            System.out.println("Fecha de inicio: " + tarea.getFechaInicio());
+            System.out.println("Fecha de fin: " + tarea.getFechaFin());
+            System.out.println();
+        }
     }
-    
-    public AlmacenDatos getAlmacen(){
+
+    public AlmacenDatos getAlmacen() {
         return this.almacenDatos;
+    }
+
+    @Override
+    public void mostrarEstadisticas() {
+        // Recorremos la lista de grupos
+        for (Grupo grupo : grupoDAO.findAll()) {
+            System.out.println("Grupo: " + grupo.getNombre());
+
+            // Filtramos las tareas pertenecientes al grupo actual
+            List<Tarea> tareasGrupo = tareaDAO.findAll().stream()
+                    .filter(tarea -> tarea.getGrupo().equals(grupo))
+                    .collect(Collectors.toList());
+
+            // Mostramos las estadísticas de las tareas del grupo
+            for (Tarea tarea : tareasGrupo) {
+                System.out.println("Tarea: " + tarea.getNombre());
+
+                // Verificamos si la tarea ha caducado
+                if (tarea.getFechaFin().before(new Date())) {
+                    System.out.println("¡Tarea caducada!");
+                }
+
+                // Mostramos la información del técnico asignado a la tarea
+                Tecnico tecnico = tarea.getTecnico();
+                if (tecnico != null) {
+                    System.out.println("Técnico asignado: " + tecnico.getNombre() + " " + tecnico.getApellidos());
+                }
+
+                // Mostramos los técnicos agrupados por grupo
+                List<Tecnico> tecnicosGrupo = tecnicoDAO.findAll().stream()
+                        .filter(tec -> tec.getGrupo().equals(grupo))
+                        .collect(Collectors.toList());
+
+                System.out.println("Técnicos del grupo:");
+                for (Tecnico tec : tecnicosGrupo) {
+                    System.out.println("- " + tec.getNombre() + " " + tec.getApellidos());
+                }
+
+                System.out.println();
+            }
+        }
+    }
+
+    private Date calcularTiempoFinTarea(Date d, int tiempoEstimado) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+        c.add(Calendar.HOUR, tiempoEstimado);
+        return c.getTime();
     }
 
 }

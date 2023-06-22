@@ -37,5 +37,7 @@ public interface INegocioBO {
     void realizarCargaMasivaDeDatos();
     
     void asignacionAutomaticaTareas();
+    
+    void mostrarEstadisticas();
 
 }

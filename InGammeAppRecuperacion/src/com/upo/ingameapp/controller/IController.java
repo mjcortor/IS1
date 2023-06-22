@@ -29,6 +29,8 @@ public interface IController {
     void realizarCargaDeDatos();
     
     void cambiarEstadoIncidencia();
+    
+    void crearGrupo() throws IOException;
             
     
 }

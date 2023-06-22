@@ -1,7 +1,5 @@
 package com.upo.ingameapp.model;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *

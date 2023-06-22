@@ -98,6 +98,7 @@ public class ControllerImpl implements IController {
     @Override
     public void asignacionAutomaticaTareas() {
         System.out.println("Algoritmo de asignación Automática de Tareas.");
+        negocioBO.asignacionAutomaticaTareas();
     }
 
     @Override
@@ -132,7 +133,16 @@ public class ControllerImpl implements IController {
 
     @Override
     public void cambiarEstadoIncidencia() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        negocioBO.listarIncidenias();
+        System.out.println("Introduzca el núemero de la incidencia que seacambiar el estado:");
+        
+    }
+
+    @Override
+    public void crearGrupo() throws IOException{
+        System.out.println("Crear Grupo:");
+        System.out.println("Introduzca el nombre del grupo:");
+        String nombreGrupo = io.obtenerBuffer().readLine();
     }
 
 }
