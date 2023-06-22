@@ -1,7 +1,9 @@
 package com.upo.ingameapp.view;
 
+import com.upo.ingameapp.main.IO;
 import com.upo.ingameapp.controller.IController;
 import com.upo.ingameapp.controller.impl.ControllerImpl;
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -12,49 +14,47 @@ import java.util.Scanner;
 public class View {
 
     /* SERVICIOS */
-    private IController controller = new ControllerImpl();
+    private final IController controller = new ControllerImpl();
+    private IO io = new IO();
 
-    public void menu() {
+    public void menu() throws IOException {
         int opc = 0;
         boolean salir = false;
-        Scanner sc = new Scanner(System.in);
 
         do {
             mostrarMenuPrincipal();
 
-            try {
+//            try {
+            opc = Integer.valueOf(io.obtenerBuffer().readLine());
 
-                opc = sc.nextInt();
+            switch (opc) {
 
-                switch (opc) {
+                case 1:
+                    menuGestionTecnicos();
 
-                    case 1:
-                        menuGestionTecnicos();
+                    break;
+                case 2:
+                    menuGestionIncidencias();
 
-                        break;
-                    case 2:
-                        menuGestionIncidencias();
+                    break;
 
-                        break;
+                case 3:
+                    menuTareas();
 
-                    case 3:
-                        menuTareas();
+                case 4:
+                    menuEstadisticas();
 
-                    case 4:
-                        menuEstadisticas();
+                    break;
+                case 0:
+                    salir = true;
+                    break;
 
-                        break;
-                    case 0:
-                        salir = true;
-                        break;
-
-                }
-
-            } catch (InputMismatchException e) {
-                System.out.println("Debes introducir un numero");
-                sc.next();
             }
 
+//            } catch (InputMismatchException e) {
+//                System.out.println("Debes introducir un numero");
+//                sc.next();
+//            }
         } while (!salir);
     }
 
@@ -92,7 +92,7 @@ public class View {
     private void mostrarMenuGestionTareas() {
         System.out.println("Menu Gestión Incidencias");
         System.out.println("-------------------------------");
-        System.out.println("1. Introducir Tarea.");  
+        System.out.println("1. Introducir Tarea.");
         System.out.println("2. Asignación Automática de Tareas.");
         System.out.println("");
         System.out.println("0. Salir");
@@ -104,161 +104,151 @@ public class View {
         System.out.println("-------------------------------");
 
         System.out.println("1. Obtener estadísticas del sistema.");
-        System.out.println("2. Consultar Tareas");
-        System.out.println("3. Consultar Incidencias");
-        System.out.println("4. Consultar Técnicos");
+        System.out.println("2. Consultar Tareas.");
+        System.out.println("3. Consultar Incidencias.");
+        System.out.println("4. Consultar Técnicos.");
         System.out.println("5. Consultar Grupos.");
+        System.out.println("6. Realizar carga masiva de datos.");
         System.out.println("");
         System.out.println("0. Salir");
     }
 
-    private void menuGestionTecnicos() {
+    private void menuGestionTecnicos() throws IOException {
 
         int opc;
-        Scanner sc = new Scanner(System.in);
 
-        try {
+        mostrarMenuGestionTecnicos();
 
-            mostrarMenuGestionTecnicos();
+        opc = Integer.valueOf(io.obtenerBuffer().readLine());
 
-            opc = sc.nextInt();
+        switch (opc) {
 
-            switch (opc) {
+            case 1:
+                System.out.println("Entrando a añadir técnico...");
+                controller.aniadirTecnico();
 
-                case 1:
-                    System.out.println("Entrando a añadir técnico...");
-                    controller.aniadirTecnico();
+                break;
+            case 2:
+                System.out.println("Entrando a añadir grupo...");
+                controller.aniadirGrupo();
+                break;
 
-                    break;
-                case 2:
-                    System.out.println("Entrando a añadir grupo...");
-                    controller.aniadirGrupo();
-                    break;
+            case 0:
+                System.out.println("Volviendo atras...");
+                menu();
+                break;
+            default:
+                System.out.println("Esa opción no está disponible. Volviendo atrás.");
+                break;
 
-                case 0:
-                    System.out.println("Volviendo atras...");
-                    menu();
-                    break;
-                default:
-                    System.out.println("Esa opción no está disponible. Volviendo atrás.");
-                    break;
-
-            }
-
-        } catch (InputMismatchException e) {
-            System.out.println("Debes introducir un numero");
-            sc.next();
         }
+
     }
 
-    private void menuGestionIncidencias() {
+    private void menuGestionIncidencias() throws IOException {
 
         int opc;
-        Scanner sc = new Scanner(System.in);
 
-        try {
+        mostrarMenuGestionIncidencias();
 
-            mostrarMenuGestionIncidencias();
+        opc = Integer.valueOf(io.obtenerBuffer().readLine());
 
-            opc = sc.nextInt();
+        switch (opc) {
 
-            switch (opc) {
+            case 1:
+                System.out.println("Entrando a añadir incidencia...");
+                controller.aniadirIncidencia();
+                break;
+            case 2:
+                System.out.println("Entrando a listar incidencias...");
+                controller.listarIncidenciasDisponibles();
+                break;
 
-                case 1:
-                    System.out.println("Entrando a añadir incidencia...");
-                    controller.aniadirIncidencia();
-                    break;
-                case 2:
-                    System.out.println("Entrando a listar incidencias...");
-                    controller.listarIncidenciasDisponibles();
-                    break;
+            case 0:
+                System.out.println("Volviendo atras...");
+                menu();
+                break;
+            default:
+                System.out.println("Esa opción no está disponible. Volviendo atrás.");
+                break;
 
-                case 0:
-                    System.out.println("Volviendo atras...");
-
-                    menu();
-                    break;
-                default:
-                    System.out.println("Esa opción no está disponible. Volviendo atrás.");
-                    break;
-
-            }
-
-        } catch (InputMismatchException e) {
-            System.out.println("Debes introducir un numero");
-            sc.next();
         }
+
     }
 
-    private void menuTareas() {
+    private void menuTareas() throws IOException {
 
         int opc;
-        Scanner sc = new Scanner(System.in);
 
-        try {
+        mostrarMenuGestionTareas();
 
-            mostrarMenuGestionTareas();
+        opc = Integer.valueOf(io.obtenerBuffer().readLine());
 
-            opc = sc.nextInt();
+        switch (opc) {
 
-            switch (opc) {
+            case 1:
+                System.out.println("Entrando a Crear Tarea...");
+                controller.crearTarea();
+                break;
+            case 2:
+                System.out.println("Entrando a Asignación Automática de Tareas...");
+                controller.asignacionAutomaticaTareas();
+                break;
 
-                case 1:
-                    System.out.println("Entrando a añadir tarea a técnico...");
+            case 0:
+                System.out.println("Volviendo atras...");
 
-                    break;
-                case 2:
-                    System.out.println("Entrando a añadir tareas a grupo...");
+                menu();
+                break;
+            default:
+                System.out.println("Esa opción no está disponible. Volviendo atrás.");
+                break;
 
-                    break;
-
-                case 0:
-                    System.out.println("Volviendo atras...");
-
-                    menu();
-                    break;
-                default:
-                    System.out.println("Esa opción no está disponible. Volviendo atrás.");
-                    break;
-
-            }
-
-        } catch (InputMismatchException e) {
-            System.out.println("Debes introducir un numero");
-            sc.next();
         }
+
     }
 
-    private void menuEstadisticas() {
+    private void menuEstadisticas() throws IOException {
 
         int opc;
-        Scanner sc = new Scanner(System.in);
 
-        try {
+        mostrarMenuEstadisticas();
 
-            mostrarMenuEstadisticas();
+        opc = Integer.valueOf(io.obtenerBuffer().readLine());
 
-            opc = sc.nextInt();
+        switch (opc) {
 
-            switch (opc) {
+            case 1:
+                System.out.println("Consultar Estadísticas: ");
+                controller.mostrarEstadisticas();
+                break;
 
-                case 1:
-                    System.out.println("Consultar Estadísticas: ");
-                    controller.mostrarEstadisticas();
-                    break;
+            case 2:
+                System.out.println("Mostrando todas las Tareas:");
+                controller.listarTodasTareas();
+                break;
+            case 3:
+                System.out.println("Mostrando todas las Incidencias:");
+                controller.listarIncidencias();
+                break;
+            case 4:
+                System.out.println("Mostrando todos los técnicos:");
+                controller.listarTodosTecnicos();
+                break;
+            case 5:
+                System.out.println("Mostrando todos los grupos:");
+                controller.listarTodosGrupos();
+            case 6:
+                System.out.println("Realizando Carga Masiva de datos....");
+                controller.realizarCargaDeDatos();
+            case 0:
+                System.out.println("Volviendo atrás..");
 
-                case 0:
-                    System.out.println("Volviendo atras...");
+                menu();
+                break;
 
-                    menu();
-                    break;
-
-            }
-
-        } catch (InputMismatchException e) {
-            System.out.println("Debes introducir un numero");
-            sc.next();
         }
+
     }
 
     // Métodos taareas de menu gestión de Técnicos.

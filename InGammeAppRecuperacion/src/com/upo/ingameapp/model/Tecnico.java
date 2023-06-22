@@ -11,7 +11,7 @@ public class Tecnico extends BaseEntity {
 
     private String nombre;
     private String apellidos;
-    private short numTareas;
+    private int numTareas;
 
     public Tecnico() {
 
@@ -21,6 +21,7 @@ public class Tecnico extends BaseEntity {
 
         this.nombre = nombre;
         this.apellidos = apellidos;
+        this.numTareas = 0;
 
     }
 
@@ -52,11 +53,11 @@ public class Tecnico extends BaseEntity {
         this.apellidos = apellidos;
     }
 
-    public short getNumTareas() {
+    public int getNumTareas() {
         return numTareas;
     }
 
-    public void setNumTareas(short numTareas) {
+    public void setNumTareas(int numTareas) {
         this.numTareas = numTareas;
     }
 
@@ -65,8 +66,8 @@ public class Tecnico extends BaseEntity {
         StringBuilder sb = new StringBuilder();
         sb.append("Técnico con nombre: ");
         sb.append(this.nombre);
-        sb.append(", apellidos: " + this.apellidos);
-        sb.append(" nº de tareas asignadas al técnico: " + this.numTareas);
+        sb.append(",apellidos: " + this.apellidos);
+        sb.append(" | nº de tareas asignadas al técnico: " + this.numTareas);
         return sb.toString();
 
     }

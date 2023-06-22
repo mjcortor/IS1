@@ -13,7 +13,6 @@ import com.upo.ingameapp.model.Tecnico;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  *
  * @author Manuel
@@ -38,28 +37,28 @@ public class NegocioBOImpl implements INegocioBO {
     public void listarIncidenias() {
         System.out.println("Las incidencias que hay en el sistema son las siguientes:");
         System.out.println("-----------------------------------------------------");
-        incidenciaDAO.findAll().forEach(i -> i.toString());
+        incidenciaDAO.findAll().forEach(i -> System.out.println(i.toString()));
     }
 
     @Override
     public void listarTecnicos() {
         System.out.println("Los técnicos que hay en el sistema son los siguientes:");
         System.out.println("-----------------------------------------------------");
-        tecnicoDAO.findAll().forEach(t -> t.toString());
+        tecnicoDAO.findAll().forEach(t -> System.out.println(t.toString()));
     }
 
     @Override
     public void listarTareas() {
         System.out.println("Las tareas que hay en el sistema son las siguientes:");
         System.out.println("-----------------------------------------------------");
-        tareaDAO.findAll().forEach(t -> t.toString());
+        tareaDAO.findAll().forEach(t -> System.out.println(t.toString()));
     }
 
     @Override
     public void listarGrupos() {
         System.out.println("Los grupos que hay en el sistema son los siguientes:");
         System.out.println("-----------------------------------------------------");
-        grupoDAO.findAll().forEach(g -> g.toString());
+        grupoDAO.findAll().forEach(g -> System.out.println(g.toString()));
     }
 
     @Override
@@ -78,6 +77,11 @@ public class NegocioBOImpl implements INegocioBO {
     @Override
     public void crearTarea(String nombre, Tecnico tecnico, List<Incidencia> incidencias) {
         Tarea tarea = new Tarea(nombre, tecnico, incidencias);
+        int tareasTecnico = tecnicoDAO.obtenerPorId(tecnico.getId()).getNumTareas();
+        tecnicoDAO.obtenerPorId(tecnico.getId()).setNumTareas(tareasTecnico + 1);
+        incidencias.forEach((i) -> {
+            incidenciaDAO.obtenerPorId(i.getId()).setTarea(tarea);
+        });
         tareaDAO.save(tarea);
     }
 
@@ -94,15 +98,18 @@ public class NegocioBOImpl implements INegocioBO {
 
     @Override
     public void crearGrupo(String nombre, String codigo) {
-       Grupo grupo = new Grupo(codigo, nombre);
-       grupoDAO.save(grupo);
+        Grupo grupo = new Grupo(codigo, nombre);
+        grupoDAO.save(grupo);
     }
 
     @Override
     public void listarTecnicosDisponibles() {
         System.out.println("Técnicos disponibles: ");
         System.out.println("-----------------------------");
-        tecnicoDAO.findTecnicoDisponible().forEach(t -> t.toString());
+        tecnicoDAO.findTecnicoDisponible().forEach(t -> {
+            int cont = 0;
+            System.out.println(t.toString() + "[" + cont + "]");
+        });
 
     }
 
@@ -259,6 +266,7 @@ public class NegocioBOImpl implements INegocioBO {
         List<Tarea> listaTareas = new ArrayList<>();
         listaTareas.add(ta1);
         listaTareas.add(ta2);
+        tareaDAO.saveAll(listaTareas);
 
     }
 
@@ -266,7 +274,7 @@ public class NegocioBOImpl implements INegocioBO {
     public void listarIncideciasDisponibles() {
         System.out.println("Incidencias disponibles: ");
         System.out.println("-----------------------------");
-        incidenciaDAO.findIncidenciasNuevasSinTarea().forEach(t -> t.toString());
+        incidenciaDAO.findIncidenciasNuevasSinTarea().forEach(t -> System.out.println(t.toString()));
     }
 
 }
