@@ -27,6 +27,8 @@ public interface IController {
     void listarTodosTecnicos();
 
     void realizarCargaDeDatos();
+    
+    void cambiarEstadoIncidencia();
             
     
 }

@@ -20,7 +20,7 @@ public interface INegocioBO {
 
     void crearTecnico(String nom, String ape);
 
-    void crearIncidencia(String nombre, String descripcion, int tiempoEstimación);
+    void crearIncidencia(String nombre, String descripcion, int tiempoEstimacion);
 
     void crearTarea(String nombre, Tecnico tecnico, List<Incidencia> incidencias);
 
@@ -35,5 +35,7 @@ public interface INegocioBO {
     void listarIncideciasDisponibles();
 
     void realizarCargaMasivaDeDatos();
+    
+    void asignacionAutomaticaTareas();
 
 }

@@ -69,8 +69,8 @@ public class NegocioBOImpl implements INegocioBO {
     }
 
     @Override
-    public void crearIncidencia(String nombre, String descripcion, int tiempoEstimación) {
-        Incidencia i = new Incidencia(nombre, descripcion, tiempoEstimación, null);
+    public void crearIncidencia(String nombre, String descripcion, int tiempoEstimacion) {
+        Incidencia i = new Incidencia(nombre, descripcion, tiempoEstimacion, null);
         incidenciaDAO.save(i);
     }
 
@@ -275,6 +275,11 @@ public class NegocioBOImpl implements INegocioBO {
         System.out.println("Incidencias disponibles: ");
         System.out.println("-----------------------------");
         incidenciaDAO.findIncidenciasNuevasSinTarea().forEach(t -> System.out.println(t.toString()));
+    }
+
+    @Override
+    public void asignacionAutomaticaTareas() {
+        
     }
 
 }

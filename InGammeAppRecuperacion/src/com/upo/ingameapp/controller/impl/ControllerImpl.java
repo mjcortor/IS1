@@ -19,7 +19,7 @@ public class ControllerImpl implements IController {
     private IO io = new IO();
 
     @Override
-    public void aniadirTecnico() throws IOException{
+    public void aniadirTecnico() throws IOException {
         System.out.println("Introduzca el nombre del Técnico");
         String nombre = io.obtenerBuffer().readLine();
         System.out.println("Introduzca los apellidos del Técnico");
@@ -31,7 +31,7 @@ public class ControllerImpl implements IController {
     }
 
     @Override
-    public void aniadirGrupo() throws IOException{
+    public void aniadirGrupo() throws IOException {
         System.out.println("Introduzca el nombre del grupo.");
         String nombre = io.obtenerBuffer().readLine();
         System.out.println("Introduzca el codigo del grupo");
@@ -40,7 +40,7 @@ public class ControllerImpl implements IController {
     }
 
     @Override
-    public void aniadirIncidencia() throws IOException{
+    public void aniadirIncidencia() throws IOException {
         System.out.println("Introduzca el nombre de la nueva incidencia:");
         String nombreIndicencia = io.obtenerBuffer().readLine();
         System.out.println("Introduzca la descripcion de la nueva incidencia:");
@@ -60,8 +60,8 @@ public class ControllerImpl implements IController {
     }
 
     @Override
-    public void crearTarea() throws IOException{
-        
+    public void crearTarea() throws IOException {
+
         List<Incidencia> incidenciasSeleccionadas = new ArrayList<>();
         Tecnico t;
         int opc = 0;
@@ -72,7 +72,10 @@ public class ControllerImpl implements IController {
         int i = Integer.valueOf(io.obtenerBuffer().readLine());
         t = negocioBO.seleccionarTecnico(i);
         System.out.println("Agregue incidencias mientras haya disponibles o lo decida:");
+        System.out.println("1. Mostrar incidencias y agregar a Tarea.");
+        System.out.println("2. Salir de agregar Incidencias a tarea y terminar al tarea.");
         do {
+            opc = Integer.valueOf(io.obtenerBuffer().readLine());
             switch (opc) {
                 case 1:
                     negocioBO.listarIncideciasDisponibles();
@@ -87,7 +90,6 @@ public class ControllerImpl implements IController {
                     System.out.println("Opción no disponible");
                     break;
             }
-            opc = Integer.valueOf(io.obtenerBuffer().readLine());
         } while (opc < 1 && opc > 2);
         negocioBO.crearTarea(nombre, t, incidenciasSeleccionadas);
         System.out.println("Tarea creada correctamente.");
@@ -126,6 +128,11 @@ public class ControllerImpl implements IController {
     @Override
     public void realizarCargaDeDatos() {
         negocioBO.realizarCargaMasivaDeDatos();
+    }
+
+    @Override
+    public void cambiarEstadoIncidencia() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
